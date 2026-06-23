@@ -52,9 +52,10 @@ export function GenderPieChart({ data, isLoading }: Props) {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value) => [value, ""]}
+              formatter={(value, name) => [value, name]}
               contentStyle={{ background: "var(--color-panel-800)", border: "1px solid var(--color-border-subtle)", borderRadius: 8, fontSize: 12 }}
-              labelStyle={{ color: "var(--color-alloy-100)" }}
+              itemStyle={{ color: "var(--color-alloy-100)" }}
+              labelFormatter={() => ""}
             />
             <Legend
               formatter={(value) => <span style={{ fontSize: 12, color: "var(--color-alloy-300)" }}>{value}</span>}
