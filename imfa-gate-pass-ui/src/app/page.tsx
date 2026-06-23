@@ -18,11 +18,16 @@ export default function DashboardPage() {
   const [showAllDates, setShowAll]    = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   const [detailId, setDetailId]       = useState<string | null>(null);
-  const [theme, setTheme]             = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme]             = useState<'dark' | 'light'>('light');
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
-    if (saved === 'light') setTheme('light');
+    if (saved === 'dark') {
+      setTheme('dark');
+      delete document.documentElement.dataset.theme;
+    } else {
+      document.documentElement.dataset.theme = 'light';
+    }
   }, []);
 
   const toggleTheme = useCallback(() => {

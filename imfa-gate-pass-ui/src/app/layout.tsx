@@ -10,8 +10,10 @@ const themeScript = `
 (function() {
   try {
     var t = localStorage.getItem('theme');
-    if (t === 'light') document.documentElement.dataset.theme = 'light';
-  } catch(e) {}
+    if (t !== 'dark') document.documentElement.dataset.theme = 'light';
+  } catch(e) {
+    document.documentElement.dataset.theme = 'light';
+  }
 })();
 `;
 
