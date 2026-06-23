@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-graphite-900: #15171B;
+  --color-panel-800:    #1F2329;
+  --color-panel-700:    #262B32;
+  --color-ember-500:    #E8552E;
+  --color-ember-dim:    rgba(232, 85, 46, 0.14);
+  --color-steel-400:    #5C8AA8;
+  --color-steel-dim:    rgba(92, 138, 168, 0.16);
+  --color-slag-500:     #80868F;
+  --color-slag-dim:     rgba(128, 134, 143, 0.16);
+  --color-alloy-100:    #ECEEF0;
+  --color-alloy-300:    #B7BCC2;
+  --color-border-subtle:#2B3038;
+
+  --font-display: "Oswald", sans-serif;
+  --font-mono:    "JetBrains Mono", monospace;
+  --font-sans:    "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  body { @apply bg-graphite-900 text-alloy-100; font-family: "Inter", system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+}
+
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+.animate-fade-in { animation: fade-in 0.15s ease; }
