@@ -36,7 +36,7 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
                LOWER(g.whomToVisit) LIKE :qlike)
         ORDER BY
           CASE g.status WHEN 'onsite' THEN 0 WHEN 'pending' THEN 1 ELSE 2 END,
-          g.createdTime DESC
+          g.createdTime DESC NULLS LAST
         """)
     Page<GatePass> findAllByFilters(
         @Param("date")         String date,
