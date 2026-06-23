@@ -47,7 +47,7 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
         <div className="p-5 flex flex-col gap-3.5 flex-1">
           <div className="flex items-center gap-3">
             <div className="w-16 h-16 rounded-lg bg-panel-800 border border-border-subtle flex items-center justify-center overflow-hidden flex-shrink-0">
-              {pass.photo ? <img src={pass.photo} alt={pass.visitorName} className="w-full h-full object-cover" /> : <span className="text-2xl text-slag-500">👤</span>}
+              {pass.photo?.startsWith("data:") ? <img src={pass.photo} alt={pass.visitorName} className="w-full h-full object-cover" /> : <span className="text-2xl text-slag-500">👤</span>}
             </div>
             <div>
               <div className="text-[14px] font-medium mb-1.5">{pass.companyName}</div>

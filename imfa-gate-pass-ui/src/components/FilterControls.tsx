@@ -10,7 +10,7 @@ interface Props {
 export function FilterControls({ query, location, status, showAllDates, onQuery, onLocation, onStatus, onShowAllDates }: Props) {
   const sel = "w-full appearance-none bg-panel-800 border border-border-subtle rounded-lg px-3 pr-8 py-2 text-[13px] text-alloy-100 cursor-pointer outline-none focus:ring-1 focus:ring-steel-400";
   return (
-    <section className="max-w-[1080px] mx-auto px-5 pb-3 flex gap-2.5 flex-wrap items-center">
+    <section className="w-full px-8 pb-3 flex gap-2.5 flex-wrap items-center">
       <div className="relative flex-1 min-w-[180px]">
         <input value={query} onChange={(e) => onQuery(e.target.value)}
           placeholder="Search name, company, UID or pass no."

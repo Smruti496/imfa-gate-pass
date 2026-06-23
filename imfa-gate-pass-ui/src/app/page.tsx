@@ -35,7 +35,7 @@ export default function DashboardPage() {
         query={query} location={location} status={status} showAllDates={showAllDates}
         onQuery={setQuery} onLocation={setLocation} onStatus={setStatus} onShowAllDates={setShowAll}
       />
-      <main className="max-w-[1080px] mx-auto px-5 pb-16">
+      <main className="w-full px-8 pb-16">
         <GatePassList filters={filters} onOpenDetail={setDetailId} />
       </main>
       {showNewPass && <NewPassDrawer onClose={() => setShowNewPass(false)} onCreated={() => { setShowNewPass(false); refresh(); }} />}

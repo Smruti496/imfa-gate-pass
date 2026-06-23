@@ -2,7 +2,7 @@ interface HeaderProps { onNewPass: () => void; }
 
 export function Header({ onNewPass }: HeaderProps) {
   return (
-    <header className="max-w-[1080px] mx-auto px-5 py-5 pb-3 flex items-start justify-between gap-4 flex-wrap">
+    <header className="w-full px-8 py-5 pb-3 flex items-start justify-between gap-4 flex-wrap">
       <div className="flex items-center gap-3">
         <div className="w-11 h-11 rounded-lg bg-panel-800 border border-ember-500 flex items-center justify-center flex-shrink-0">
           <svg viewBox="0 0 24 24" className="w-[22px] h-[22px] text-ember-500 fill-none stroke-current stroke-2 stroke-linecap-round stroke-linejoin-round">

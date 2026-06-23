@@ -6,7 +6,7 @@ export function SiteChart() {
   const max = Math.max(1, ...(chartData?.map((d) => d.count) ?? [0]));
   const data = chartData ?? Array(4).fill({ locationName: "…", count: 0 });
   return (
-    <section className="max-w-[1080px] mx-auto px-5 pb-4">
+    <section className="w-full px-8 pb-4">
       <div className="bg-panel-800 border border-border-subtle rounded-[10px] p-4">
         <div className="font-display text-xs text-alloy-300 mb-2.5 uppercase tracking-[0.04em]">Entries by site — today</div>
         <div className="flex items-end gap-3.5 h-[100px]">

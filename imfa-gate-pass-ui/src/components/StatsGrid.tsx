@@ -11,7 +11,7 @@ const TILES = [
 export function StatsGrid() {
   const { stats, isLoading } = useDashboard();
   return (
-    <section className="max-w-[1080px] mx-auto px-5 pb-4 grid grid-cols-2 md:grid-cols-4 gap-2.5">
+    <section className="w-full px-8 pb-4 grid grid-cols-2 md:grid-cols-4 gap-2.5">
       {TILES.map((t) => (
         <div key={t.key} className="bg-panel-800 border border-border-subtle rounded-[10px] p-3 flex items-center gap-2.5">
           <div className={`w-[34px] h-[34px] rounded-lg flex items-center justify-center flex-shrink-0 ${t.accentClass}`}>
