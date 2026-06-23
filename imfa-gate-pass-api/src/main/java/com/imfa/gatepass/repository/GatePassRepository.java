@@ -56,4 +56,25 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
 
     @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate LIKE :yearPrefix%")
     long countByYearPrefix(@Param("yearPrefix") String yearPrefix);
+
+    @Query(value = "SELECT status, COUNT(*) FROM gate_pass GROUP BY status", nativeQuery = true)
+    List<Object[]> countGroupByStatus();
+
+    @Query(value = "SELECT location, status, COUNT(*) FROM gate_pass GROUP BY location, status", nativeQuery = true)
+    List<Object[]> countGroupByLocationAndStatus();
+
+    @Query(value = "SELECT COALESCE(gender, 'Unknown'), COUNT(*) FROM gate_pass GROUP BY gender", nativeQuery = true)
+    List<Object[]> countGroupByGender();
+
+    @Query(value = "SELECT LPAD(EXTRACT(HOUR FROM createdtime AT TIME ZONE 'Asia/Kolkata')::text, 2, '0'), COUNT(*) FROM gate_pass WHERE createdtime IS NOT NULL GROUP BY 1 ORDER BY 1", nativeQuery = true)
+    List<Object[]> countGroupByHour();
+
+    @Query(value = "SELECT TO_CHAR(createdtime AT TIME ZONE 'Asia/Kolkata', 'Mon YYYY'), DATE_TRUNC('month', createdtime AT TIME ZONE 'Asia/Kolkata'), COUNT(*) FROM gate_pass WHERE createdtime IS NOT NULL GROUP BY 1, 2 ORDER BY 2", nativeQuery = true)
+    List<Object[]> countGroupByMonth();
+
+    @Query(value = "SELECT 'Q' || EXTRACT(QUARTER FROM createdtime AT TIME ZONE 'Asia/Kolkata')::text || ' ' || EXTRACT(YEAR FROM createdtime AT TIME ZONE 'Asia/Kolkata')::text, DATE_TRUNC('quarter', createdtime AT TIME ZONE 'Asia/Kolkata'), COUNT(*) FROM gate_pass WHERE createdtime IS NOT NULL GROUP BY 1, 2 ORDER BY 2", nativeQuery = true)
+    List<Object[]> countGroupByQuarter();
+
+    @Query(value = "SELECT EXTRACT(YEAR FROM createdtime AT TIME ZONE 'Asia/Kolkata')::text, COUNT(*) FROM gate_pass WHERE createdtime IS NOT NULL GROUP BY 1 ORDER BY 1", nativeQuery = true)
+    List<Object[]> countGroupByYear();
 }

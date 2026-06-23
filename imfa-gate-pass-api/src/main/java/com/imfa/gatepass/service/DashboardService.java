@@ -5,6 +5,7 @@ import com.imfa.gatepass.repository.GatePassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -47,5 +48,75 @@ public class DashboardService {
             .locationId(locId).locationName(LOCATION_NAMES.get(locId))
             .count(countMap.getOrDefault(locId, 0L)).build()
         ).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public AnalyticsDto getAnalytics() {
+        return AnalyticsDto.builder()
+            .statusDistribution(buildStatusDistribution())
+            .locationStatusMatrix(buildLocationStatusMatrix())
+            .genderDistribution(buildGenderDistribution())
+            .hourlyTrend(buildTrend(repo.countGroupByHour(), 0))
+            .monthlyTrend(buildTrend(repo.countGroupByMonth(), 0))
+            .quarterlyTrend(buildTrend(repo.countGroupByQuarter(), 0))
+            .yearlyTrend(buildTrend(repo.countGroupByYear(), 0))
+            .build();
+    }
+
+    private List<StatusCountDto> buildStatusDistribution() {
+        List<Object[]> rows = repo.countGroupByStatus();
+        long total = rows.stream().mapToLong(r -> toLong(r[1])).sum();
+        return rows.stream().map(r -> StatusCountDto.builder()
+            .status((String) r[0])
+            .count(toLong(r[1]))
+            .percentage(total == 0 ? 0 : Math.round(toLong(r[1]) * 1000.0 / total) / 10.0)
+            .build()
+        ).toList();
+    }
+
+    private List<LocationStatusDto> buildLocationStatusMatrix() {
+        List<Object[]> rows = repo.countGroupByLocationAndStatus();
+        Map<String, Map<String, Long>> matrix = new HashMap<>();
+        for (Object[] r : rows) {
+            String loc = (String) r[0];
+            String st  = (String) r[1];
+            matrix.computeIfAbsent(loc, k -> new HashMap<>()).put(st, toLong(r[2]));
+        }
+        return LOCATION_ORDER.stream().map(locId -> {
+            Map<String, Long> m = matrix.getOrDefault(locId, Map.of());
+            long p = m.getOrDefault("pending", 0L);
+            long o = m.getOrDefault("onsite",  0L);
+            long c = m.getOrDefault("cleared", 0L);
+            return LocationStatusDto.builder()
+                .locationId(locId).locationName(LOCATION_NAMES.get(locId))
+                .pending(p).onsite(o).cleared(c).total(p + o + c)
+                .build();
+        }).toList();
+    }
+
+    private List<GenderCountDto> buildGenderDistribution() {
+        List<Object[]> rows = repo.countGroupByGender();
+        long total = rows.stream().mapToLong(r -> toLong(r[1])).sum();
+        return rows.stream().map(r -> GenderCountDto.builder()
+            .gender((String) r[0])
+            .count(toLong(r[1]))
+            .percentage(total == 0 ? 0 : Math.round(toLong(r[1]) * 1000.0 / total) / 10.0)
+            .build()
+        ).toList();
+    }
+
+    private List<TrendPointDto> buildTrend(List<Object[]> rows, int labelIdx) {
+        return rows.stream().map(r -> TrendPointDto.builder()
+            .label((String) r[labelIdx])
+            .count(toLong(r[rows.get(0).length - 1]))
+            .build()
+        ).toList();
+    }
+
+    private static long toLong(Object v) {
+        if (v instanceof Long l) return l;
+        if (v instanceof Number n) return n.longValue();
+        if (v instanceof BigDecimal bd) return bd.longValue();
+        return 0L;
     }
 }

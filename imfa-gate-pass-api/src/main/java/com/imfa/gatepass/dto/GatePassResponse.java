@@ -14,6 +14,7 @@ public class GatePassResponse {
     String whomToVisit;
     String photoId;
     String photoIdType;
+    String gender;
     String location;
     String gate;
     String visitDate;
@@ -30,6 +31,7 @@ public class GatePassResponse {
             .id(g.getId()).passNo(g.getPassNo())
             .visitorName(g.getVisitorName()).companyName(g.getCompanyName())
             .whomToVisit(g.getWhomToVisit()).photoId(g.getPhotoId()).photoIdType(g.getPhotoIdType())
+            .gender(g.getGender())
             .location(g.getLocation()).gate(g.getGate())
             .visitDate(g.getVisitDate()).visitTime(g.getVisitTime())
             .purpose(g.getPurpose()).photo(g.getPhoto())

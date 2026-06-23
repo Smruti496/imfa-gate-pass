@@ -16,3 +16,6 @@ ALTER TABLE public.gate_pass
 CREATE SEQUENCE IF NOT EXISTS gate_pass_seq START 1;
 -- Add unique constraint on pass_no
 ALTER TABLE public.gate_pass ADD CONSTRAINT IF NOT EXISTS gate_pass_pass_no_uq UNIQUE (pass_no);
+
+-- Analytics: visitor gender
+ALTER TABLE public.gate_pass ADD COLUMN IF NOT EXISTS gender text;

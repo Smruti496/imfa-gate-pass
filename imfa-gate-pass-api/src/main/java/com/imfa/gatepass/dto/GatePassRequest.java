@@ -10,6 +10,7 @@ public class GatePassRequest {
     @NotBlank String whomToVisit;
     @NotBlank String photoId;         // UID number
     @NotBlank String photoIdType;     // "Aadhaar" / "PAN" / "Voter ID"
+    @NotBlank String gender;          // "Male" | "Female" | "Other"
     @NotBlank String location;
     @NotBlank String gate;
     @NotBlank String visitDate;       // "YYYY-MM-DD"

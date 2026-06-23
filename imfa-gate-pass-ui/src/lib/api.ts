@@ -1,4 +1,4 @@
-import type { GatePass, DashboardStats, ChartData, PageResult } from "./types";
+import type { GatePass, DashboardStats, ChartData, PageResult, AnalyticsData } from "./types";
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080/api";
 
@@ -18,8 +18,9 @@ export interface ListParams {
 }
 
 export const api = {
-  getStats:    () => request<DashboardStats>("/dashboard/stats"),
-  getChartData:() => request<ChartData[]>("/dashboard/chart"),
+  getStats:     () => request<DashboardStats>("/dashboard/stats"),
+  getChartData: () => request<ChartData[]>("/dashboard/chart"),
+  getAnalytics: () => request<AnalyticsData>("/dashboard/analytics"),
   listPasses: (p: ListParams = {}) => {
     const qs = new URLSearchParams();
     if (p.location && p.location !== "all") qs.set("location", p.location);

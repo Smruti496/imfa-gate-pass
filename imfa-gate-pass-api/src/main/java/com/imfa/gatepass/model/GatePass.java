@@ -66,6 +66,9 @@ public class GatePass {
     @Column(name = "check_out_time")
     private String checkOutTime;    // stored as text "HH:MM"
 
+    @Column(name = "gender")
+    private String gender;          // "Male" | "Female" | "Other"
+
     @PrePersist
     void onCreate() {
         if (id == null) id = UUID.randomUUID();

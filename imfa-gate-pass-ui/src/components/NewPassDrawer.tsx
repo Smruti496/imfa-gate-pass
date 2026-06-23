@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import { api } from "@/lib/api";
-import { LOCATIONS, PURPOSES, ID_TYPES } from "@/lib/constants";
+import { LOCATIONS, PURPOSES, ID_TYPES, GENDERS } from "@/lib/constants";
 import { todayStr, nowHHMM } from "@/lib/utils";
 
 export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreated(): void }) {
   const [form, setForm] = useState({
     visitorName: "", companyName: "", whomToVisit: "",
-    photoId: "", photoIdType: ID_TYPES[0],
+    photoId: "", photoIdType: ID_TYPES[0], gender: GENDERS[0],
     location: LOCATIONS[0].id, gate: LOCATIONS[0].gates[0],
     visitDate: todayStr(), visitTime: nowHHMM(),
     purpose: PURPOSES[0], photo: null as string | null,
@@ -59,7 +59,7 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
           <Field label="Company / organisation"><input className={inp} placeholder="E.g. Shree Engineering Works" value={form.companyName} onChange={(e) => set("companyName", e.target.value)} /></Field>
           <Field label="Whom to visit"><input className={inp} placeholder="Host name and department" value={form.whomToVisit} onChange={(e) => set("whomToVisit", e.target.value)} /></Field>
           <div className="flex gap-3">
-            <Field label="UID type">
+            <Field label="Identity Type">
               <div className="relative">
                 <select className={sel} value={form.photoIdType} onChange={(e) => set("photoIdType", e.target.value)}>
                   {ID_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -67,13 +67,23 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
                 <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-alloy-300 pointer-events-none text-xs">▾</span>
               </div>
             </Field>
-            <Field label="ID document">
-              <label className={`cursor-pointer flex items-center gap-1.5 ${inp} ${form.photoId ? "border-steel-400 text-steel-400" : ""} hover:border-alloy-300`}>
-                {form.photoId ? "✓ Document uploaded" : "📎 Upload ID document"}
+            <div className="flex flex-col gap-1.5 flex-1">
+              <span className="text-xs text-alloy-300 font-medium tracking-wide">ID Document</span>
+              <label className={`cursor-pointer flex items-center gap-2 w-full border-2 border-dashed rounded-lg px-3 py-2 text-[13px] transition-colors ${form.photoId ? "border-steel-400 text-steel-400 bg-steel-400/5" : "border-border-subtle text-alloy-400 bg-panel-800"} hover:border-steel-400 hover:text-alloy-100`}>
+                <span className="text-base leading-none">{form.photoId ? "✓" : "📎"}</span>
+                <span>{form.photoId ? "Document uploaded" : "Upload ID document"}</span>
                 <input type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleIdDoc(f); }} />
               </label>
-            </Field>
+            </div>
           </div>
+          <Field label="Gender">
+            <div className="relative">
+              <select className={sel} value={form.gender} onChange={(e) => set("gender", e.target.value)}>
+                {GENDERS.map((g) => <option key={g} value={g}>{g}</option>)}
+              </select>
+              <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-alloy-300 pointer-events-none text-xs">▾</span>
+            </div>
+          </Field>
           <div className="flex gap-3">
             <Field label="Plant / office">
               <div className="relative">

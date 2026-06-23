@@ -37,6 +37,7 @@ public class GatePassService {
             .passNo(generatePassNo())
             .visitorName(req.getVisitorName()).companyName(req.getCompanyName())
             .whomToVisit(req.getWhomToVisit()).photoId(req.getPhotoId()).photoIdType(req.getPhotoIdType())
+            .gender(req.getGender())
             .location(req.getLocation()).gate(req.getGate())
             .visitDate(req.getVisitDate()).visitTime(req.getVisitTime())
             .purpose(req.getPurpose()).photo(req.getPhoto())

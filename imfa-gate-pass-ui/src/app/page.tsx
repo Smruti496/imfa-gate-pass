@@ -4,12 +4,14 @@ import { GlowBar } from "@/components/GlowBar";
 import { Header } from "@/components/Header";
 import { StatsGrid } from "@/components/StatsGrid";
 import { SiteChart } from "@/components/SiteChart";
+import { AnalyticsSection } from "@/components/AnalyticsSection";
 import { FilterControls } from "@/components/FilterControls";
 import { GatePassList } from "@/components/GatePassList";
 import { NewPassDrawer } from "@/components/NewPassDrawer";
 import { DetailDrawer } from "@/components/DetailDrawer";
 import { useGatePasses } from "@/hooks/useGatePasses";
 import { useDashboard } from "@/hooks/useDashboard";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function DashboardPage() {
   const [query, setQuery]             = useState("");
@@ -44,8 +46,9 @@ export default function DashboardPage() {
   }, []);
 
   const filters = { location, status, q: query, showAllDates };
-  const { mutate: mutateList }        = useGatePasses(filters);
-  const { mutateStats }               = useDashboard();
+  const { mutate: mutateList }                      = useGatePasses(filters);
+  const { mutateStats }                             = useDashboard();
+  const { analytics, isLoading: analyticsLoading }  = useAnalytics();
 
   const refresh = useCallback(() => { mutateList(); mutateStats?.(); }, [mutateList, mutateStats]);
 
@@ -55,6 +58,7 @@ export default function DashboardPage() {
       <Header onNewPass={() => setShowNewPass(true)} theme={theme} onToggleTheme={toggleTheme} />
       <StatsGrid />
       <SiteChart />
+      <AnalyticsSection analytics={analytics} isLoading={analyticsLoading} />
       <FilterControls
         query={query} location={location} status={status} showAllDates={showAllDates}
         onQuery={setQuery} onLocation={setLocation} onStatus={setStatus} onShowAllDates={setShowAll}

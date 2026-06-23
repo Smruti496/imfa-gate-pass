@@ -8,6 +8,7 @@ export interface GatePass {
   whomToVisit: string;
   photoId: string;          // UID number
   photoIdType: string;
+  gender: string;           // "Male" | "Female" | "Other"
   location: string;
   gate: string;
   visitDate: string;        // "YYYY-MM-DD"
@@ -38,4 +39,40 @@ export interface PageResult<T> {
   totalElements: number;
   totalPages: number;
   number: number;
+}
+
+export interface StatusCount {
+  status: string;
+  count: number;
+  percentage: number;
+}
+
+export interface LocationStatus {
+  locationId: string;
+  locationName: string;
+  pending: number;
+  onsite: number;
+  cleared: number;
+  total: number;
+}
+
+export interface GenderCount {
+  gender: string;
+  count: number;
+  percentage: number;
+}
+
+export interface TrendPoint {
+  label: string;
+  count: number;
+}
+
+export interface AnalyticsData {
+  statusDistribution: StatusCount[];
+  locationStatusMatrix: LocationStatus[];
+  genderDistribution: GenderCount[];
+  hourlyTrend: TrendPoint[];
+  monthlyTrend: TrendPoint[];
+  quarterlyTrend: TrendPoint[];
+  yearlyTrend: TrendPoint[];
 }

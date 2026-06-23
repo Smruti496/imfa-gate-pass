@@ -11,6 +11,7 @@ public class DashboardController {
 
     private final DashboardService service;
 
-    @GetMapping("/stats") public DashboardStatsDto stats() { return service.getStats(); }
-    @GetMapping("/chart") public List<ChartDataDto> chart() { return service.getChartData(); }
+    @GetMapping("/stats")     public DashboardStatsDto stats()     { return service.getStats(); }
+    @GetMapping("/chart")     public List<ChartDataDto> chart()     { return service.getChartData(); }
+    @GetMapping("/analytics") public AnalyticsDto analytics()       { return service.getAnalytics(); }
 }
