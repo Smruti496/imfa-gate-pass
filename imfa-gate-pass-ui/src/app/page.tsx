@@ -14,6 +14,7 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function DashboardPage() {
+  const [activeTab, setActiveTab]      = useState<"analytics" | "list">("analytics");
   const [query, setQuery]             = useState("");
   const [location, setLocation]       = useState("all");
   const [status, setStatus]           = useState("all");
@@ -57,15 +58,43 @@ export default function DashboardPage() {
       <GlowBar />
       <Header onNewPass={() => setShowNewPass(true)} theme={theme} onToggleTheme={toggleTheme} />
       <StatsGrid />
-      <SiteChart />
-      <AnalyticsSection analytics={analytics} isLoading={analyticsLoading} />
-      <FilterControls
-        query={query} location={location} status={status} showAllDates={showAllDates}
-        onQuery={setQuery} onLocation={setLocation} onStatus={setStatus} onShowAllDates={setShowAll}
-      />
-      <main className="w-full px-8 pb-16">
-        <GatePassList filters={filters} onOpenDetail={setDetailId} />
-      </main>
+      <div className="w-full px-8 pt-4">
+        <div className="flex gap-2 mb-6">
+          {([
+            { key: "analytics", label: "Analytics" },
+            { key: "list",      label: "List View"  },
+          ] as const).map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setActiveTab(t.key)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                activeTab === t.key
+                  ? "bg-ember-500 text-white"
+                  : "bg-panel-700 text-alloy-300 hover:text-alloy-100"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {activeTab === "analytics" && (
+        <>
+          <SiteChart />
+          <AnalyticsSection analytics={analytics} isLoading={analyticsLoading} />
+        </>
+      )}
+      {activeTab === "list" && (
+        <>
+          <FilterControls
+            query={query} location={location} status={status} showAllDates={showAllDates}
+            onQuery={setQuery} onLocation={setLocation} onStatus={setStatus} onShowAllDates={setShowAll}
+          />
+          <main className="w-full px-8 pb-16">
+            <GatePassList filters={filters} onOpenDetail={setDetailId} />
+          </main>
+        </>
+      )}
       {showNewPass && <NewPassDrawer onClose={() => setShowNewPass(false)} onCreated={() => { setShowNewPass(false); refresh(); }} />}
       {detailId && <DetailDrawer passId={detailId} onClose={() => setDetailId(null)} onMutated={refresh} />}
     </>
