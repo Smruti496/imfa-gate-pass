@@ -8,13 +8,21 @@ import java.util.*;
 
 public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
 
-    List<GatePass> findByVisitdate(String visitdate);
+    @Query("SELECT g FROM GatePass g WHERE g.visitDate = :date")
+    List<GatePass> findByVisitDate(@Param("date") String date);
 
-    long countByVisitdateAndStatus(String visitdate, String status);
+    @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate = :date")
+    long countByVisitDate(@Param("date") String date);
+
+    @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate = :date AND g.status = :status")
+    long countByVisitDateAndStatus(@Param("date") String date, @Param("status") String status);
+
+    @Query("SELECT g.location, COUNT(g) FROM GatePass g WHERE g.visitDate = :date GROUP BY g.location")
+    List<Object[]> countByLocationForDate(@Param("date") String date);
 
     @Query("""
         SELECT g FROM GatePass g WHERE
-          (:showAllDates = true OR g.visitDate = :date)
+          (:showAllDates = 'true' OR g.visitDate = :date)
           AND (:location = 'all' OR g.location = :location)
           AND (:status = 'all' OR g.status = :status)
           AND (:query = '' OR
@@ -33,9 +41,12 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
         @Param("status")       String status,
         @Param("query")        String query,
         @Param("qlike")        String qlike,
-        @Param("showAllDates") boolean showAllDates,
+        @Param("showAllDates") String showAllDates,
         Pageable pageable
     );
+
+    @Query(value = "SELECT nextval('gate_pass_seq')", nativeQuery = true)
+    Long nextPassSeq();
 
     @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate LIKE :yearPrefix%")
     long countByYearPrefix(@Param("yearPrefix") String yearPrefix);

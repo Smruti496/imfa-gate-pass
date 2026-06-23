@@ -17,15 +17,16 @@ public class GatePassService {
 
     private final GatePassRepository repo;
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
+    private static final ZoneId IST = ZoneId.of("Asia/Kolkata");
 
     private String generatePassNo() {
-        int year = LocalDate.now().getYear();
-        long count = repo.countByYearPrefix(String.valueOf(year));
-        return String.format("GP-%d-%04d", year, count + 1);
+        int year = LocalDate.now(IST).getYear();
+        long seq = repo.nextPassSeq();
+        return String.format("GP-%d-%04d", year, seq);
     }
 
-    private String today() { return LocalDate.now().toString(); }
-    private String nowHHMM() { return LocalTime.now().format(TIME_FMT); }
+    private String today() { return LocalDate.now(IST).toString(); }
+    private String nowHHMM() { return LocalTime.now(IST).format(TIME_FMT); }
 
     @Transactional
     public GatePassResponse create(GatePassRequest req) {
@@ -49,7 +50,7 @@ public class GatePassService {
         String qlike = query == null || query.isBlank() ? "" : "%" + query.toLowerCase(Locale.ROOT) + "%";
         String q = query == null ? "" : query;
         Pageable pageable = PageRequest.of(page, size);
-        return repo.findAllByFilters(date, location, status, q, qlike, showAllDates, pageable)
+        return repo.findAllByFilters(date, location, status, q, qlike, String.valueOf(showAllDates), pageable)
                    .map(GatePassResponse::from);
     }
 

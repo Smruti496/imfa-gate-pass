@@ -10,15 +10,19 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
   const [pass, setPass] = useState<GatePass | null>(null);
   const [loading, setLoading] = useState(true);
   const [actioning, setActioning] = useState(false);
+  const [actionError, setActionError] = useState("");
 
   useEffect(() => { api.getPass(passId).then(setPass).finally(() => setLoading(false)); }, [passId]);
 
   const doAction = async (fn: () => Promise<GatePass | void>) => {
     setActioning(true);
+    setActionError("");
     try {
       const result = await fn();
       if (result) { setPass(result as GatePass); onMutated(); }
       else { onMutated(); onClose(); }
+    } catch (err: unknown) {
+      setActionError(err instanceof Error ? err.message : "Action failed. Please try again.");
     } finally { setActioning(false); }
   };
 
@@ -69,6 +73,11 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
           </dl>
         </div>
         <div className="p-4 border-t border-border-subtle sticky bottom-0 bg-graphite-900 flex gap-2.5 justify-end flex-wrap">
+          {actionError && (
+            <div className="w-full text-[12px] bg-ember-dim border border-[#4a2c22] text-[#F2A48F] px-3 py-2 rounded-lg mb-2">
+              {actionError}
+            </div>
+          )}
           {pass.status === "pending" && <>
             <button disabled={actioning} onClick={() => doAction(() => api.cancelPass(pass.id))}
               className="px-4 py-2 rounded-lg text-[13.5px] font-semibold text-ember-500 border border-[#4a2c22] hover:border-ember-500 disabled:opacity-60">
