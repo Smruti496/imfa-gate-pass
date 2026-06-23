@@ -35,7 +35,7 @@ public class GatePassResponse {
             .location(g.getLocation()).gate(g.getGate())
             .visitDate(g.getVisitDate()).visitTime(g.getVisitTime())
             .purpose(g.getPurpose()).photo(g.getPhoto())
-            .status(g.getStatus()).checkInTime(g.getCheckInTime()).checkOutTime(g.getCheckOutTime())
+            .status(g.getStatus() != null ? g.getStatus().toLowerCase() : null).checkInTime(g.getCheckInTime()).checkOutTime(g.getCheckOutTime())
             .createdTime(g.getCreatedTime() != null ? g.getCreatedTime().toString() : null)
             .build();
     }

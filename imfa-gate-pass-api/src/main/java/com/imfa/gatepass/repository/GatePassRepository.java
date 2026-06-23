@@ -14,10 +14,10 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
     @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate = :date")
     long countByVisitDate(@Param("date") String date);
 
-    @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate = :date AND g.status = :status")
+    @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate = :date AND LOWER(g.status) = :status")
     long countByVisitDateAndStatus(@Param("date") String date, @Param("status") String status);
 
-    @Query("SELECT COUNT(g) FROM GatePass g WHERE g.status = :status")
+    @Query("SELECT COUNT(g) FROM GatePass g WHERE LOWER(g.status) = :status")
     long countByStatus(@Param("status") String status);
 
     @Query("SELECT g.location, COUNT(g) FROM GatePass g WHERE g.visitDate = :date GROUP BY g.location")
@@ -27,7 +27,7 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
         SELECT g FROM GatePass g WHERE
           (:showAllDates = 'true' OR g.visitDate = :date)
           AND (:location = 'all' OR g.location = :location)
-          AND (:status = 'all' OR g.status = :status)
+          AND (:status = 'all' OR LOWER(g.status) = :status)
           AND (:query = '' OR
                LOWER(g.visitorName) LIKE :qlike OR
                LOWER(g.companyName) LIKE :qlike OR
@@ -35,7 +35,7 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
                LOWER(g.passNo)      LIKE :qlike OR
                LOWER(g.whomToVisit) LIKE :qlike)
         ORDER BY
-          CASE g.status WHEN 'onsite' THEN 0 WHEN 'pending' THEN 1 ELSE 2 END,
+          CASE LOWER(g.status) WHEN 'onsite' THEN 0 WHEN 'pending' THEN 1 ELSE 2 END,
           g.createdTime DESC NULLS LAST
         """)
     Page<GatePass> findAllByFilters(
@@ -57,10 +57,10 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
     @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate LIKE :yearPrefix%")
     long countByYearPrefix(@Param("yearPrefix") String yearPrefix);
 
-    @Query(value = "SELECT status, COUNT(*) FROM gate_pass GROUP BY status", nativeQuery = true)
+    @Query(value = "SELECT LOWER(status), COUNT(*) FROM gate_pass GROUP BY LOWER(status)", nativeQuery = true)
     List<Object[]> countGroupByStatus();
 
-    @Query(value = "SELECT location, status, COUNT(*) FROM gate_pass GROUP BY location, status", nativeQuery = true)
+    @Query(value = "SELECT LOWER(location), LOWER(status), COUNT(*) FROM gate_pass GROUP BY LOWER(location), LOWER(status)", nativeQuery = true)
     List<Object[]> countGroupByLocationAndStatus();
 
     @Query(value = "SELECT COALESCE(gender, 'Unknown'), COUNT(*) FROM gate_pass GROUP BY gender", nativeQuery = true)

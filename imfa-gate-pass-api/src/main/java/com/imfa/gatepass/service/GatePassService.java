@@ -67,7 +67,7 @@ public class GatePassService {
     public GatePassResponse checkIn(UUID id) {
         GatePass pass = repo.findById(id)
             .orElseThrow(() -> new RuntimeException("Gate pass not found: " + id));
-        if (!"pending".equals(pass.getStatus()))
+        if (!"pending".equalsIgnoreCase(pass.getStatus()))
             throw new IllegalStateException("Only pending passes can be checked in");
         pass.setStatus("onsite");
         pass.setCheckInTime(nowHHMM());
@@ -78,7 +78,7 @@ public class GatePassService {
     public GatePassResponse checkOut(UUID id) {
         GatePass pass = repo.findById(id)
             .orElseThrow(() -> new RuntimeException("Gate pass not found: " + id));
-        if (!"onsite".equals(pass.getStatus()))
+        if (!"onsite".equalsIgnoreCase(pass.getStatus()))
             throw new IllegalStateException("Only on-site visitors can be checked out");
         pass.setStatus("cleared");
         pass.setCheckOutTime(nowHHMM());
@@ -89,7 +89,7 @@ public class GatePassService {
     public void cancel(UUID id) {
         GatePass pass = repo.findById(id)
             .orElseThrow(() -> new RuntimeException("Gate pass not found: " + id));
-        if (!"pending".equals(pass.getStatus()))
+        if (!"pending".equalsIgnoreCase(pass.getStatus()))
             throw new IllegalStateException("Only pending passes can be cancelled");
         repo.deleteById(id);
     }

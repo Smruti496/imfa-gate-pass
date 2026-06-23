@@ -31,11 +31,10 @@ function InnerLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: Pie
 interface Props { data: StatusCount[] | undefined; isLoading: boolean }
 
 export function StatusPieChart({ data, isLoading }: Props) {
-  const chartData = (data ?? []).map((d) => ({
-    name: STATUS_LABELS[d.status] ?? d.status,
-    value: d.count,
-    color: STATUS_COLORS[d.status] ?? "#888",
-  }));
+  const chartData = (data ?? []).map((d) => {
+    const key = d.status.toLowerCase();
+    return { name: STATUS_LABELS[key] ?? d.status, value: d.count, color: STATUS_COLORS[key] ?? "#888" };
+  });
 
   return (
     <div className="bg-panel-800 border border-border-subtle rounded-[10px] p-4 flex flex-col gap-3">
