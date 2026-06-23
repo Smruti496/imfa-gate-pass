@@ -21,7 +21,9 @@ public class GatePassService {
 
     private String generatePassNo() {
         int year = LocalDate.now(IST).getYear();
-        long seq = repo.nextPassSeq();
+        long fromSeq = repo.nextPassSeq();
+        long fromMax = repo.maxPassNoForYear(year) + 1;
+        long seq = Math.max(fromSeq, fromMax);
         return String.format("GP-%d-%04d", year, seq);
     }
 

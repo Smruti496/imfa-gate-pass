@@ -51,6 +51,9 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
     @Query(value = "SELECT nextval('gate_pass_seq')", nativeQuery = true)
     Long nextPassSeq();
 
+    @Query(value = "SELECT COALESCE(MAX(CAST(SPLIT_PART(pass_no, '-', 3) AS BIGINT)), 0) FROM gate_pass WHERE pass_no LIKE CONCAT('GP-', CAST(:year AS TEXT), '-%')", nativeQuery = true)
+    Long maxPassNoForYear(@Param("year") int year);
+
     @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate LIKE :yearPrefix%")
     long countByYearPrefix(@Param("yearPrefix") String yearPrefix);
 }

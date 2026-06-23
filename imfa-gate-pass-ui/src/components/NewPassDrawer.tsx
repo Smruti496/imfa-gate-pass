@@ -21,7 +21,7 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.visitorName || !form.companyName || !form.whomToVisit || !form.photoId) {
-      setError("Visitor name, company, whom to visit and UID are required."); return;
+      setError("Visitor name, company, whom to visit and ID document are required."); return;
     }
     setError(""); setSubmitting(true);
     try { await api.createPass(form); onCreated(); }
@@ -32,6 +32,11 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
   const handlePhoto = async (file: File) => {
     const dataUrl = await compressImage(file);
     set("photo", dataUrl);
+  };
+
+  const handleIdDoc = async (file: File) => {
+    const dataUrl = await compressImage(file);
+    set("photoId", dataUrl);
   };
 
   const inp = "w-full bg-panel-800 border border-border-subtle rounded-lg px-3 py-2 text-[13.5px] text-alloy-100 outline-none focus:ring-1 focus:ring-steel-400";
@@ -62,7 +67,12 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
                 <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-alloy-300 pointer-events-none text-xs">▾</span>
               </div>
             </Field>
-            <Field label="UID number"><input className={inp + " font-mono"} placeholder="XXXX-XXXX-XXXX" value={form.photoId} onChange={(e) => set("photoId", e.target.value)} /></Field>
+            <Field label="ID document">
+              <label className={`cursor-pointer flex items-center gap-1.5 ${inp} ${form.photoId ? "border-steel-400 text-steel-400" : ""} hover:border-alloy-300`}>
+                {form.photoId ? "✓ Document uploaded" : "📎 Upload ID document"}
+                <input type="file" accept="image/*" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleIdDoc(f); }} />
+              </label>
+            </Field>
           </div>
           <div className="flex gap-3">
             <Field label="Plant / office">
