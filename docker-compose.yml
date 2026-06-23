@@ -12,7 +12,7 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
       - SPRING_PROFILES_ACTIVE=prod
-      - APP_CORS_ALLOWED_ORIGINS=http://localhost:5002,https://demo.unitysphere.site:5002
+      - APP_CORS_ALLOWED_ORIGINS=http://localhost:5002,https://demo.unitysphere.site:5002,https://demo.unitysphere.site:5003
     expose:
       - "8080"
     networks:

@@ -47,7 +47,7 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
             <div className="text-[11px] text-ember-500 font-mono tracking-[0.05em]">New entry · Security Copy</div>
             <h2 className="font-display text-[19px] font-semibold mt-0.5">Issue Gate Pass</h2>
           </div>
-          <button type="button" onClick={onClose} className="border border-border-subtle text-alloy-300 rounded-lg p-1.5 hover:text-alloy-100 hover:border-[#3A4047]">✕</button>
+          <button type="button" onClick={onClose} className="border border-border-subtle text-alloy-300 rounded-lg p-1.5 hover:text-alloy-100 hover:border-alloy-300">✕</button>
         </div>
         <div className="p-5 flex flex-col gap-3.5 flex-1">
           <Field label="Visitor name"><input className={inp} placeholder="E.g. Mr. Rajesh Kumar" autoFocus value={form.visitorName} onChange={(e) => set("visitorName", e.target.value)} /></Field>
@@ -100,17 +100,17 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
               <div className="w-14 h-14 rounded-lg bg-panel-800 border border-border-subtle flex items-center justify-center overflow-hidden flex-shrink-0">
                 {form.photo ? <img src={form.photo} alt="preview" className="w-full h-full object-cover" /> : <span className="text-slag-500 text-xl">👤</span>}
               </div>
-              <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13.5px] font-semibold border border-[#383D45] text-alloy-100 hover:border-alloy-300">
+              <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13.5px] font-semibold border border-border-subtle text-alloy-100 hover:border-alloy-300">
                 📷 Take / upload photo
                 <input type="file" accept="image/*" capture="environment" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) handlePhoto(f); }} />
               </label>
             </div>
             <span className="text-[11px] text-alloy-300">Auto-compressed to stay under 200 KB.</span>
           </div>
-          {error && <div className="text-[12.5px] bg-ember-dim border border-[#4a2c22] text-[#F2A48F] px-3 py-2 rounded-lg">{error}</div>}
+          {error && <div className="text-[12.5px] bg-ember-dim border border-ember-500/40 text-ember-500 px-3 py-2 rounded-lg">{error}</div>}
         </div>
         <div className="p-4 border-t border-border-subtle sticky bottom-0 bg-graphite-900 flex gap-2.5 justify-end">
-          <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg text-[13.5px] font-semibold border border-[#383D45] text-alloy-100 hover:border-alloy-300">Cancel</button>
+          <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg text-[13.5px] font-semibold border border-border-subtle text-alloy-100 hover:border-alloy-300">Cancel</button>
           <button type="submit" disabled={submitting} className="px-4 py-2 rounded-lg text-[13.5px] font-semibold bg-ember-500 text-[#1A0D08] hover:opacity-90 disabled:opacity-60">
             {submitting ? "Saving…" : "+ Issue pass"}
           </button>

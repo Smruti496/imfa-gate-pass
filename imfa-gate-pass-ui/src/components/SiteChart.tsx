@@ -7,7 +7,7 @@ export function SiteChart() {
   const data = chartData ?? Array(4).fill({ locationName: "…", count: 0 });
   return (
     <section className="w-full px-8 pb-4">
-      <div className="bg-panel-800 border border-border-subtle rounded-[10px] p-4">
+      <div className="bg-panel-800 border border-border-subtle rounded-[10px] p-4 shadow-card">
         <div className="font-display text-xs text-alloy-300 mb-2.5 uppercase tracking-[0.04em]">Entries by site — today</div>
         <div className="flex items-end gap-3.5 h-[100px]">
           {data.map((d: any, i: number) => {

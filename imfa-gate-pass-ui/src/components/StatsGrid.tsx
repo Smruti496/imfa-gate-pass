@@ -3,7 +3,7 @@ import { useDashboard } from "@/hooks/useDashboard";
 
 const TILES = [
   {
-    key: "totalToday" as const, label: "Today's passes", accentClass: "bg-[#2A2F36] text-alloy-100",
+    key: "totalToday" as const, label: "Today's passes", accentClass: "bg-panel-700 text-alloy-300",
     icon: <><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.3 3-5.5 6.5-5.5s6.5 2.2 6.5 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.2c2.6.4 4.5 2.2 4.5 4.8"/></>,
   },
   {
@@ -25,7 +25,7 @@ export function StatsGrid() {
   return (
     <section className="w-full px-8 pb-4 grid grid-cols-2 md:grid-cols-4 gap-2.5">
       {TILES.map((t) => (
-        <div key={t.key} className="bg-panel-800 border border-border-subtle rounded-[10px] p-3 flex items-center gap-2.5">
+        <div key={t.key} className="bg-panel-800 border border-border-subtle rounded-[10px] p-3 flex items-center gap-2.5 shadow-card">
           <div className={`w-[34px] h-[34px] rounded-lg flex items-center justify-center flex-shrink-0 ${t.accentClass}`}>
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{t.icon}</svg>
           </div>

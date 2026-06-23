@@ -33,6 +33,9 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
   );
 
   const loc = locById(pass.location);
+  const photoSrc = pass.photo
+    ? (pass.photo.startsWith("data:") ? pass.photo : `data:image/jpeg;base64,${pass.photo}`)
+    : null;
   return (
     <div className="fixed inset-0 bg-black/60 flex justify-end z-50 animate-fade-in"
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
@@ -42,12 +45,12 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
             <div className="text-[11px] text-ember-500 font-mono tracking-[0.05em]">{pass.passNo}</div>
             <h2 className="font-display text-[19px] font-semibold mt-0.5">{pass.visitorName}</h2>
           </div>
-          <button onClick={onClose} className="border border-border-subtle text-alloy-300 rounded-lg p-1.5 hover:text-alloy-100 hover:border-[#3A4047]">✕</button>
+          <button onClick={onClose} className="border border-border-subtle text-alloy-300 rounded-lg p-1.5 hover:text-alloy-100 hover:border-alloy-300">✕</button>
         </div>
         <div className="p-5 flex flex-col gap-3.5 flex-1">
           <div className="flex items-center gap-3">
             <div className="w-16 h-16 rounded-lg bg-panel-800 border border-border-subtle flex items-center justify-center overflow-hidden flex-shrink-0">
-              {pass.photo?.startsWith("data:") ? <img src={pass.photo} alt={pass.visitorName} className="w-full h-full object-cover" /> : <span className="text-2xl text-slag-500">👤</span>}
+              {photoSrc ? <img src={photoSrc} alt={pass.visitorName} className="w-full h-full object-cover" /> : <span className="text-2xl text-slag-500">👤</span>}
             </div>
             <div>
               <div className="text-[14px] font-medium mb-1.5">{pass.companyName}</div>
@@ -74,13 +77,13 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
         </div>
         <div className="p-4 border-t border-border-subtle sticky bottom-0 bg-graphite-900 flex gap-2.5 justify-end flex-wrap">
           {actionError && (
-            <div className="w-full text-[12px] bg-ember-dim border border-[#4a2c22] text-[#F2A48F] px-3 py-2 rounded-lg mb-2">
+            <div className="w-full text-[12px] bg-ember-dim border border-ember-500/40 text-ember-500 px-3 py-2 rounded-lg mb-2">
               {actionError}
             </div>
           )}
           {pass.status === "pending" && <>
             <button disabled={actioning} onClick={() => doAction(() => api.cancelPass(pass.id))}
-              className="px-4 py-2 rounded-lg text-[13.5px] font-semibold text-ember-500 border border-[#4a2c22] hover:border-ember-500 disabled:opacity-60">
+              className="px-4 py-2 rounded-lg text-[13.5px] font-semibold text-ember-500 border border-ember-500/40 hover:border-ember-500 disabled:opacity-60">
               🗑 Cancel pass
             </button>
             <button disabled={actioning} onClick={() => doAction(() => api.checkIn(pass.id))}

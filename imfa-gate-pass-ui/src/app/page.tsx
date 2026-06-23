@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { GlowBar } from "@/components/GlowBar";
 import { Header } from "@/components/Header";
 import { StatsGrid } from "@/components/StatsGrid";
@@ -18,6 +18,25 @@ export default function DashboardPage() {
   const [showAllDates, setShowAll]    = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   const [detailId, setDetailId]       = useState<string | null>(null);
+  const [theme, setTheme]             = useState<'dark' | 'light'>('dark');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') setTheme('light');
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      if (next === 'light') {
+        document.documentElement.dataset.theme = 'light';
+      } else {
+        delete document.documentElement.dataset.theme;
+      }
+      return next;
+    });
+  }, []);
 
   const filters = { location, status, q: query, showAllDates };
   const { mutate: mutateList }        = useGatePasses(filters);
@@ -28,7 +47,7 @@ export default function DashboardPage() {
   return (
     <>
       <GlowBar />
-      <Header onNewPass={() => setShowNewPass(true)} />
+      <Header onNewPass={() => setShowNewPass(true)} theme={theme} onToggleTheme={toggleTheme} />
       <StatsGrid />
       <SiteChart />
       <FilterControls

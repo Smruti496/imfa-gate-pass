@@ -18,6 +18,22 @@
   --font-display: "Oswald", sans-serif;
   --font-mono:    "JetBrains Mono", monospace;
   --font-sans:    "Inter", system-ui, sans-serif;
+
+  --shadow-card: none;
+}
+
+[data-theme="light"] {
+  --color-graphite-900: #E8ECF2;
+  --color-panel-800:    #FFFFFF;
+  --color-panel-700:    #EEF0F3;
+  --color-ember-dim:    rgba(232, 85, 46, 0.12);
+  --color-steel-dim:    rgba(92, 138, 168, 0.14);
+  --color-slag-500:     #60666E;
+  --color-slag-dim:     rgba(96, 102, 110, 0.14);
+  --color-alloy-100:    #1A1D21;
+  --color-alloy-300:    #4A5058;
+  --color-border-subtle:#D8DCE0;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
 }
 
 @layer base {
