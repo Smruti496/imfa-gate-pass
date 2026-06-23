@@ -21,7 +21,7 @@
 }
 
 @layer base {
-  body { @apply bg-graphite-900 text-alloy-100; font-family: "Inter", system-ui, sans-serif; }
+  body { @apply bg-graphite-900 text-alloy-100 font-sans; }
   * { box-sizing: border-box; }
 }
 

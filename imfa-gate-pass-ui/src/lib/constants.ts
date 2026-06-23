@@ -12,9 +12,21 @@ export const PURPOSES = [
 ] as const;
 
 export const STATUS_META = {
-  pending: { label: "Pending", stamp: "AWAITING", color: "steel" },
-  onsite:  { label: "On-Site", stamp: "ON-SITE",  color: "ember" },
-  cleared: { label: "Cleared", stamp: "CLEARED",  color: "slag"  },
+  pending: {
+    label: "Pending",
+    stamp: "AWAITING",
+    stampClass: "text-steel-400 border-steel-400 bg-steel-dim",
+  },
+  onsite: {
+    label: "On-Site",
+    stamp: "ON-SITE",
+    stampClass: "text-ember-500 border-ember-500 bg-ember-dim",
+  },
+  cleared: {
+    label: "Cleared",
+    stamp: "CLEARED",
+    stampClass: "text-slag-500 border-slag-500 bg-slag-dim",
+  },
 } as const;
 
 export const ID_TYPES = ["Aadhaar", "PAN", "Voter ID", "Passport", "Driving Licence"] as const;

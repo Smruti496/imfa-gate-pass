@@ -1,4 +1,4 @@
-export const todayStr = () => new Date().toISOString().slice(0, 10);
+export const todayStr = () => new Date().toLocaleDateString('en-CA');
 export const nowHHMM = () => {
   const d = new Date();
   return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
