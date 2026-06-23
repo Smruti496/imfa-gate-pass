@@ -22,9 +22,18 @@ export function GatePassCard({ pass, onClick }: { pass: GatePass; onClick: () =>
         </div>
         <div className="text-[12.5px] text-alloy-300 mt-0.5">{pass.companyName}</div>
         <div className="flex gap-3.5 flex-wrap mt-2 text-[11.5px] text-alloy-300">
-          <span>🏭 {loc?.name ?? pass.location}</span>
-          <span>📍 {pass.gate}</span>
-          <span>🕐 {fmtTime(pass.visitTime)}</span>
+          <span className="flex items-center gap-[5px]">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#5A6068" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21V11l5 3.5V11l5 3.5V8l8-4v17H3Z"/></svg>
+            {loc?.name ?? pass.location}
+          </span>
+          <span className="flex items-center gap-[5px]">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#5A6068" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 1 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            {pass.gate}
+          </span>
+          <span className="flex items-center gap-[5px]">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#5A6068" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+            {fmtTime(pass.visitTime)}
+          </span>
         </div>
       </div>
     </button>

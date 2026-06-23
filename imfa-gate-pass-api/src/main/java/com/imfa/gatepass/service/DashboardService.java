@@ -30,7 +30,7 @@ public class DashboardService {
         String today = LocalDate.now(IST).toString();
         long total   = repo.countByVisitDate(today);
         long onsite  = repo.countByVisitDateAndStatus(today, "onsite");
-        long pending = repo.countByVisitDateAndStatus(today, "pending");
+        long pending = repo.countByStatus("pending");   // all unvisited passes, any date
         long cleared = repo.countByVisitDateAndStatus(today, "cleared");
         return DashboardStatsDto.builder()
             .totalToday(total).onsite(onsite).pending(pending).cleared(cleared).build();

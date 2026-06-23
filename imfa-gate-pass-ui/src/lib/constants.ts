@@ -31,4 +31,5 @@ export const STATUS_META = {
 
 export const ID_TYPES = ["Aadhaar", "PAN", "Voter ID", "Passport", "Driving Licence"] as const;
 
-export const locById = (id: string) => LOCATIONS.find((l) => l.id === id);
+export const locById = (id: string | null | undefined) =>
+  LOCATIONS.find((l) => l.id === id || id?.toLowerCase().startsWith(l.id));

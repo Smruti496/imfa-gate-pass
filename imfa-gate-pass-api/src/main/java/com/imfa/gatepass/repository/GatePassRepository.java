@@ -17,6 +17,9 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
     @Query("SELECT COUNT(g) FROM GatePass g WHERE g.visitDate = :date AND g.status = :status")
     long countByVisitDateAndStatus(@Param("date") String date, @Param("status") String status);
 
+    @Query("SELECT COUNT(g) FROM GatePass g WHERE g.status = :status")
+    long countByStatus(@Param("status") String status);
+
     @Query("SELECT g.location, COUNT(g) FROM GatePass g WHERE g.visitDate = :date GROUP BY g.location")
     List<Object[]> countByLocationForDate(@Param("date") String date);
 
