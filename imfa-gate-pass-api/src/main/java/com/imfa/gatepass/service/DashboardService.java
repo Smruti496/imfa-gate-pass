@@ -51,11 +51,11 @@ public class DashboardService {
     }
 
     @Transactional(readOnly = true)
-    public AnalyticsDto getAnalytics() {
+    public AnalyticsDto getAnalytics(String startDate, String endDate) {
         return AnalyticsDto.builder()
-            .statusDistribution(buildStatusDistribution())
-            .locationStatusMatrix(buildLocationStatusMatrix())
-            .genderDistribution(buildGenderDistribution())
+            .statusDistribution(buildStatusDistribution(startDate, endDate))
+            .locationStatusMatrix(buildLocationStatusMatrix(startDate, endDate))
+            .genderDistribution(buildGenderDistribution(startDate, endDate))
             .hourlyTrend(buildTrend(repo.countGroupByHour(), 0))
             .monthlyTrend(buildTrend(repo.countGroupByMonth(), 0))
             .quarterlyTrend(buildTrend(repo.countGroupByQuarter(), 0))
@@ -63,8 +63,8 @@ public class DashboardService {
             .build();
     }
 
-    private List<StatusCountDto> buildStatusDistribution() {
-        List<Object[]> rows = repo.countGroupByStatus();
+    private List<StatusCountDto> buildStatusDistribution(String start, String end) {
+        List<Object[]> rows = repo.countGroupByStatusBetween(start, end);
         long total = rows.stream().mapToLong(r -> toLong(r[1])).sum();
         return rows.stream().map(r -> StatusCountDto.builder()
             .status((String) r[0])
@@ -74,8 +74,8 @@ public class DashboardService {
         ).toList();
     }
 
-    private List<LocationStatusDto> buildLocationStatusMatrix() {
-        List<Object[]> rows = repo.countGroupByLocationAndStatus();
+    private List<LocationStatusDto> buildLocationStatusMatrix(String start, String end) {
+        List<Object[]> rows = repo.countGroupByLocationAndStatusBetween(start, end);
         Map<String, Map<String, Long>> matrix = new HashMap<>();
         for (Object[] r : rows) {
             String loc = (String) r[0];
@@ -94,8 +94,8 @@ public class DashboardService {
         }).toList();
     }
 
-    private List<GenderCountDto> buildGenderDistribution() {
-        List<Object[]> rows = repo.countGroupByGender();
+    private List<GenderCountDto> buildGenderDistribution(String start, String end) {
+        List<Object[]> rows = repo.countGroupByGenderBetween(start, end);
         long total = rows.stream().mapToLong(r -> toLong(r[1])).sum();
         return rows.stream().map(r -> GenderCountDto.builder()
             .gender((String) r[0])

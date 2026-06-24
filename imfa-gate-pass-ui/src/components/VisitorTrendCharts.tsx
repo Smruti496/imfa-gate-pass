@@ -44,7 +44,13 @@ export function VisitorTrendCharts({ data, isLoading }: Props) {
       {isLoading ? (
         <div className="h-52 animate-pulse bg-panel-700 rounded-lg" />
       ) : trendData[tab].length === 0 ? (
-        <div className="h-52 flex items-center justify-center text-alloy-300 text-sm">No data</div>
+        <div className="h-52 flex flex-col items-center justify-center gap-2 text-alloy-300">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+          </svg>
+          <span className="text-sm font-medium">No trend data yet</span>
+          <span className="text-xs opacity-50">Trends will appear once gate passes are recorded</span>
+        </div>
       ) : (
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={trendData[tab]} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>

@@ -20,7 +20,13 @@ export interface ListParams {
 export const api = {
   getStats:     () => request<DashboardStats>("/dashboard/stats"),
   getChartData: () => request<ChartData[]>("/dashboard/chart"),
-  getAnalytics: () => request<AnalyticsData>("/dashboard/analytics"),
+  getAnalytics: (startDate?: string, endDate?: string) => {
+    const qs = new URLSearchParams();
+    if (startDate) qs.set("startDate", startDate);
+    if (endDate)   qs.set("endDate",   endDate);
+    const q = qs.toString();
+    return request<AnalyticsData>(`/dashboard/analytics${q ? `?${q}` : ""}`);
+  },
   listPasses: (p: ListParams = {}) => {
     const qs = new URLSearchParams();
     if (p.location && p.location !== "all") qs.set("location", p.location);

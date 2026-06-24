@@ -13,6 +13,12 @@ import { useGatePasses } from "@/hooks/useGatePasses";
 import { useDashboard } from "@/hooks/useDashboard";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
+function istDate(offsetDays = 0): string {
+  const d = new Date();
+  if (offsetDays) d.setDate(d.getDate() + offsetDays);
+  return d.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+}
+
 export default function DashboardPage() {
   const [activeTab, setActiveTab]      = useState<"analytics" | "list">("analytics");
   const [query, setQuery]             = useState("");
@@ -22,6 +28,8 @@ export default function DashboardPage() {
   const [showNewPass, setShowNewPass] = useState(false);
   const [detailId, setDetailId]       = useState<string | null>(null);
   const [theme, setTheme]             = useState<'dark' | 'light'>('light');
+  const [startDate, setStartDate]     = useState(() => istDate(-29));
+  const [endDate, setEndDate]         = useState(() => istDate());
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
@@ -49,7 +57,7 @@ export default function DashboardPage() {
   const filters = { location, status, q: query, showAllDates };
   const { mutate: mutateList }                      = useGatePasses(filters);
   const { mutateStats }                             = useDashboard();
-  const { analytics, isLoading: analyticsLoading }  = useAnalytics();
+  const { analytics, isLoading: analyticsLoading }  = useAnalytics({ startDate, endDate });
 
   const refresh = useCallback(() => { mutateList(); mutateStats?.(); }, [mutateList, mutateStats]);
 
@@ -81,7 +89,14 @@ export default function DashboardPage() {
       {activeTab === "analytics" && (
         <>
           <SiteChart />
-          <AnalyticsSection analytics={analytics} isLoading={analyticsLoading} />
+          <AnalyticsSection
+            analytics={analytics}
+            isLoading={analyticsLoading}
+            startDate={startDate}
+            endDate={endDate}
+            onStartDate={setStartDate}
+            onEndDate={setEndDate}
+          />
         </>
       )}
       {activeTab === "list" && (
