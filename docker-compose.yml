@@ -16,6 +16,12 @@ services:
       - APP_BASE_URL=http://localhost:5002
       - CHECKIN_WEBHOOK_ENABLED=true
       - CHECKIN_WEBHOOK_URL=https://whatsapp.bipros.com:7272/api/v1/webhook/gatepass-update
+      - CHECKIN_EMAIL_ENABLED=true
+      - CHECKIN_EMAIL_FROM=support@bipros.com
+      - MAIL_HOST=smtp.office365.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
     expose:
       - "8080"
     networks:

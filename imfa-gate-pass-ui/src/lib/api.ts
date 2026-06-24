@@ -40,7 +40,10 @@ export const api = {
   getPass:    (id: string) => request<GatePass>(`/gate-passes/${id}`),
   createPass: (data: Partial<GatePass> & Record<string, unknown>) =>
     request<GatePass>("/gate-passes", { method: "POST", body: JSON.stringify(data) }),
-  checkIn:    (id: string) => request<GatePass>(`/gate-passes/${id}/checkin`,  { method: "PATCH" }),
+  checkIn:    (id: string, emails: string[] = []) => request<GatePass>(`/gate-passes/${id}/checkin`, {
+    method: "PATCH",
+    body: emails.length ? JSON.stringify({ emails }) : undefined,
+  }),
   checkOut:   (id: string) => request<GatePass>(`/gate-passes/${id}/checkout`, { method: "PATCH" }),
   cancelPass: (id: string) => request<void>(`/gate-passes/${id}`, { method: "DELETE" }),
 };

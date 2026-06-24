@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import java.util.UUID;
 
 @RestController @RequestMapping("/api/gate-passes") @RequiredArgsConstructor
@@ -35,8 +36,14 @@ public class GatePassController {
         return service.create(req);
     }
 
+    record CheckinRequest(List<String> emails) {}
+
     @PatchMapping("/{id}/checkin")
-    public GatePassResponse checkIn(@PathVariable UUID id) { return service.checkIn(id); }
+    public GatePassResponse checkIn(@PathVariable UUID id,
+            @RequestBody(required = false) CheckinRequest body) {
+        List<String> emails = body != null && body.emails() != null ? body.emails() : List.of();
+        return service.checkIn(id, emails);
+    }
 
     @PatchMapping("/{id}/checkout")
     public GatePassResponse checkOut(@PathVariable UUID id) { return service.checkOut(id); }

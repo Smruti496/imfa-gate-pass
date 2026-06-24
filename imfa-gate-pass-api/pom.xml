@@ -68,6 +68,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Spring Mail — checkin email notification -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- OpenPDF — gate pass PDF generation -->
         <dependency>
             <groupId>com.github.librepdf</groupId>

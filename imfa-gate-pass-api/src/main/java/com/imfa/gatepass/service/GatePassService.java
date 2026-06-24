@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -24,6 +25,9 @@ public class GatePassService {
 
     @Autowired(required = false)
     private CheckinWebhookService checkinWebhookService;
+
+    @Autowired(required = false)
+    private CheckinEmailService checkinEmailService;
 
     @Value("${app.base-url}")
     private String baseUrl;
@@ -76,7 +80,7 @@ public class GatePassService {
     }
 
     @Transactional
-    public GatePassResponse checkIn(UUID id) {
+    public GatePassResponse checkIn(UUID id, List<String> emails) {
         GatePass pass = repo.findById(id)
             .orElseThrow(() -> new RuntimeException("Gate pass not found: " + id));
         if (!"pending".equalsIgnoreCase(pass.getStatus()))
@@ -84,17 +88,20 @@ public class GatePassService {
         pass.setStatus("onsite");
         pass.setCheckInTime(nowHHMM());
         GatePassResponse response = GatePassResponse.from(repo.save(pass));
-        if (checkinWebhookService != null) {
-            final String passNo  = pass.getPassNo();
-            final String waNum   = pass.getWaNumber();
-            final String pdfUrl  = baseUrl + "/api/gate-passes/" + pass.getId() + "/pdf";
-            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-                @Override
-                public void afterCommit() {
+        final String passNo = pass.getPassNo();
+        final String waNum  = pass.getWaNumber();
+        final String pdfUrl = baseUrl + "/api/gate-passes/" + pass.getId() + "/pdf";
+        final java.util.UUID passId = pass.getId();
+        final List<String> emailsCopy = List.copyOf(emails);
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                if (checkinWebhookService != null)
                     checkinWebhookService.notify(passNo, waNum, pdfUrl);
-                }
-            });
-        }
+                if (checkinEmailService != null && !emailsCopy.isEmpty())
+                    checkinEmailService.notify(passId, passNo, emailsCopy, pdfUrl);
+            }
+        });
         return response;
     }
 

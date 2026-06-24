@@ -11,6 +11,8 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
   const [loading, setLoading] = useState(true);
   const [actioning, setActioning] = useState(false);
   const [actionError, setActionError] = useState("");
+  const [sendEmail, setSendEmail] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
 
   useEffect(() => { api.getPass(passId).then(setPass).finally(() => setLoading(false)); }, [passId]);
 
@@ -84,11 +86,30 @@ export function DetailDrawer({ passId, onClose, onMutated }: { passId: string; o
               </div>
             )}
             {pass.status === "pending" && <>
+              <div className="w-full flex flex-col gap-1.5 mb-1">
+                <label className="flex items-center gap-2 text-xs text-alloy-300 cursor-pointer select-none">
+                  <input type="checkbox" checked={sendEmail} onChange={e => setSendEmail(e.target.checked)}
+                    className="accent-ember-500" />
+                  Send email notification
+                </label>
+                {sendEmail && (
+                  <textarea
+                    className="w-full bg-panel-800 border border-border-subtle rounded-lg px-3 py-2 text-[13px] text-alloy-100 outline-none focus:ring-1 focus:ring-steel-400 resize-none"
+                    placeholder="visitor@company.com, manager@company.com"
+                    value={emailInput}
+                    onChange={e => setEmailInput(e.target.value)}
+                    rows={2}
+                  />
+                )}
+              </div>
               <button disabled={actioning} onClick={() => doAction(() => api.cancelPass(pass.id))}
                 className="px-4 py-2 rounded-lg text-[13.5px] font-semibold text-ember-500 border border-ember-500/40 hover:border-ember-500 disabled:opacity-60">
                 🗑 Cancel pass
               </button>
-              <button disabled={actioning} onClick={() => doAction(() => api.checkIn(pass.id))}
+              <button disabled={actioning} onClick={() => {
+                const emails = sendEmail ? emailInput.split(",").map(s => s.trim()).filter(Boolean) : [];
+                doAction(() => api.checkIn(pass.id, emails));
+              }}
                 className="px-4 py-2 rounded-lg text-[13.5px] font-semibold bg-ember-500 text-[#1A0D08] hover:opacity-90 disabled:opacity-60">
                 ↩ Check in
               </button>
