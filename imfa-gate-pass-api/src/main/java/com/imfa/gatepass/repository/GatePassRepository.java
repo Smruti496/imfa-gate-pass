@@ -69,10 +69,10 @@ public interface GatePassRepository extends JpaRepository<GatePass, UUID> {
     @Query(value = "SELECT LOWER(location), LOWER(status), COUNT(*) FROM gate_pass WHERE visitdate BETWEEN :start AND :end GROUP BY LOWER(location), LOWER(status)", nativeQuery = true)
     List<Object[]> countGroupByLocationAndStatusBetween(@Param("start") String start, @Param("end") String end);
 
-    @Query(value = "SELECT COALESCE(gender, 'Unknown'), COUNT(*) FROM gate_pass GROUP BY gender", nativeQuery = true)
+    @Query(value = "SELECT INITCAP(LOWER(COALESCE(gender, 'Unknown'))), COUNT(*) FROM gate_pass GROUP BY INITCAP(LOWER(COALESCE(gender, 'Unknown')))", nativeQuery = true)
     List<Object[]> countGroupByGender();
 
-    @Query(value = "SELECT COALESCE(gender, 'Unknown'), COUNT(*) FROM gate_pass WHERE visitdate BETWEEN :start AND :end GROUP BY gender", nativeQuery = true)
+    @Query(value = "SELECT INITCAP(LOWER(COALESCE(gender, 'Unknown'))), COUNT(*) FROM gate_pass WHERE visitdate BETWEEN :start AND :end GROUP BY INITCAP(LOWER(COALESCE(gender, 'Unknown')))", nativeQuery = true)
     List<Object[]> countGroupByGenderBetween(@Param("start") String start, @Param("end") String end);
 
     @Query(value = "SELECT LPAD(EXTRACT(HOUR FROM createdtime AT TIME ZONE 'Asia/Kolkata')::text, 2, '0'), COUNT(*) FROM gate_pass WHERE createdtime IS NOT NULL GROUP BY 1 ORDER BY 1", nativeQuery = true)
