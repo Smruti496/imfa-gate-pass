@@ -44,4 +44,13 @@ public class GatePassController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancel(@PathVariable UUID id) { service.cancel(id); }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> getPdf(@PathVariable UUID id) {
+        byte[] pdf = service.getPdf(id);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"gate-pass-" + id + ".pdf\"")
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(pdf);
+    }
 }

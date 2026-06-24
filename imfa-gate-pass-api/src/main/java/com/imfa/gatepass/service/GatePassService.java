@@ -4,9 +4,13 @@ import com.imfa.gatepass.dto.*;
 import com.imfa.gatepass.model.GatePass;
 import com.imfa.gatepass.repository.GatePassRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -16,6 +20,13 @@ import java.util.UUID;
 public class GatePassService {
 
     private final GatePassRepository repo;
+    private final GatePassPdfService pdfService;
+
+    @Autowired(required = false)
+    private CheckinWebhookService checkinWebhookService;
+
+    @Value("${app.base-url}")
+    private String baseUrl;
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
     private static final ZoneId IST = ZoneId.of("Asia/Kolkata");
 
@@ -38,6 +49,7 @@ public class GatePassService {
             .visitorName(req.getVisitorName()).companyName(req.getCompanyName())
             .whomToVisit(req.getWhomToVisit()).photoId(req.getPhotoId()).photoIdType(req.getPhotoIdType())
             .gender(req.getGender())
+            .waNumber(req.getWaNumber())
             .location(req.getLocation()).gate(req.getGate())
             .visitDate(req.getVisitDate()).visitTime(req.getVisitTime())
             .purpose(req.getPurpose()).photo(req.getPhoto())
@@ -71,7 +83,19 @@ public class GatePassService {
             throw new IllegalStateException("Only pending passes can be checked in");
         pass.setStatus("onsite");
         pass.setCheckInTime(nowHHMM());
-        return GatePassResponse.from(repo.save(pass));
+        GatePassResponse response = GatePassResponse.from(repo.save(pass));
+        if (checkinWebhookService != null) {
+            final String passNo  = pass.getPassNo();
+            final String waNum   = pass.getWaNumber();
+            final String pdfUrl  = baseUrl + "/api/gate-passes/" + pass.getId() + "/pdf";
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    checkinWebhookService.notify(passNo, waNum, pdfUrl);
+                }
+            });
+        }
+        return response;
     }
 
     @Transactional
@@ -92,5 +116,12 @@ public class GatePassService {
         if (!"pending".equalsIgnoreCase(pass.getStatus()))
             throw new IllegalStateException("Only pending passes can be cancelled");
         repo.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public byte[] getPdf(UUID id) {
+        GatePass pass = repo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Gate pass not found: " + id));
+        return pdfService.generate(pass);
     }
 }

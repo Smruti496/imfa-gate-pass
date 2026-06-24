@@ -9,6 +9,7 @@ export interface GatePass {
   photoId: string;          // UID number
   photoIdType: string;
   gender: string;           // "Male" | "Female" | "Other"
+  waNumber: string;         // WhatsApp number for checkin notification
   location: string;
   gate: string;
   visitDate: string;        // "YYYY-MM-DD"

@@ -25,6 +25,7 @@ public class GatePassResponse {
     String checkInTime;
     String checkOutTime;
     String createdTime;
+    String waNumber;
 
     public static GatePassResponse from(GatePass g) {
         return GatePassResponse.builder()
@@ -37,6 +38,7 @@ public class GatePassResponse {
             .purpose(g.getPurpose()).photo(g.getPhoto())
             .status(g.getStatus() != null ? g.getStatus().toLowerCase() : null).checkInTime(g.getCheckInTime()).checkOutTime(g.getCheckOutTime())
             .createdTime(g.getCreatedTime() != null ? g.getCreatedTime().toString() : null)
+            .waNumber(g.getWaNumber())
             .build();
     }
 }

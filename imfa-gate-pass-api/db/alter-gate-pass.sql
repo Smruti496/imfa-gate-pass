@@ -19,3 +19,6 @@ ALTER TABLE public.gate_pass ADD CONSTRAINT IF NOT EXISTS gate_pass_pass_no_uq U
 
 -- Analytics: visitor gender
 ALTER TABLE public.gate_pass ADD COLUMN IF NOT EXISTS gender text;
+
+-- Checkin webhook: visitor WhatsApp number
+ALTER TABLE public.gate_pass ADD COLUMN IF NOT EXISTS wa_number text;

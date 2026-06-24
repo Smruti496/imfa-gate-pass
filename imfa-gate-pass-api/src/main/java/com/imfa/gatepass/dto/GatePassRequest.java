@@ -17,4 +17,5 @@ public class GatePassRequest {
     @NotBlank String visitTime;       // "HH:MM"
     @NotBlank String purpose;
     String photo;                     // base64, optional
+    @NotBlank String waNumber;        // WhatsApp number, required
 }

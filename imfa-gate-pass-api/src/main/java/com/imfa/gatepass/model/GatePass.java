@@ -69,6 +69,9 @@ public class GatePass {
     @Column(name = "gender")
     private String gender;          // "Male" | "Female" | "Other"
 
+    @Column(name = "wa_number")
+    private String waNumber;        // WhatsApp number for checkin notification
+
     @PrePersist
     void onCreate() {
         if (id == null) id = UUID.randomUUID();

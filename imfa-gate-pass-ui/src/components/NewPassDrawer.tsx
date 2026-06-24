@@ -8,6 +8,7 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
   const [form, setForm] = useState({
     visitorName: "", companyName: "", whomToVisit: "",
     photoId: "", photoIdType: ID_TYPES[0], gender: GENDERS[0],
+    waNumber: "",
     location: LOCATIONS[0].id, gate: LOCATIONS[0].gates[0],
     visitDate: todayStr(), visitTime: nowHHMM(),
     purpose: PURPOSES[0], photo: null as string | null,
@@ -20,8 +21,8 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.visitorName || !form.companyName || !form.whomToVisit || !form.photoId) {
-      setError("Visitor name, company, whom to visit and ID document are required."); return;
+    if (!form.visitorName || !form.companyName || !form.whomToVisit || !form.photoId || !form.waNumber.trim()) {
+      setError("Visitor name, company, whom to visit, ID document and WhatsApp number are required."); return;
     }
     setError(""); setSubmitting(true);
     try { await api.createPass(form); onCreated(); }
@@ -55,9 +56,9 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
           <button type="button" onClick={onClose} className="border border-border-subtle text-alloy-300 rounded-lg p-1.5 hover:text-alloy-100 hover:border-alloy-300">✕</button>
         </div>
         <div className="p-5 flex flex-col gap-3.5 flex-1">
-          <Field label="Visitor name"><input className={inp} placeholder="E.g. Mr. Rajesh Kumar" autoFocus value={form.visitorName} onChange={(e) => set("visitorName", e.target.value)} /></Field>
-          <Field label="Company / organisation"><input className={inp} placeholder="E.g. Shree Engineering Works" value={form.companyName} onChange={(e) => set("companyName", e.target.value)} /></Field>
-          <Field label="Whom to visit"><input className={inp} placeholder="Host name and department" value={form.whomToVisit} onChange={(e) => set("whomToVisit", e.target.value)} /></Field>
+          <Field label="Visitor name" required><input className={inp} placeholder="E.g. Mr. Rajesh Kumar" autoFocus value={form.visitorName} onChange={(e) => set("visitorName", e.target.value)} /></Field>
+          <Field label="Company / organisation" required><input className={inp} placeholder="E.g. Shree Engineering Works" value={form.companyName} onChange={(e) => set("companyName", e.target.value)} /></Field>
+          <Field label="Whom to visit" required><input className={inp} placeholder="Host name and department" value={form.whomToVisit} onChange={(e) => set("whomToVisit", e.target.value)} /></Field>
           <div className="flex gap-3">
             <Field label="Identity Type">
               <div className="relative">
@@ -68,7 +69,7 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
               </div>
             </Field>
             <div className="flex flex-col gap-1.5 flex-1">
-              <span className="text-xs text-alloy-300 font-medium tracking-wide">ID Document</span>
+              <span className="text-xs text-alloy-300 font-medium tracking-wide">ID Document<span className="text-ember-500 ml-0.5">*</span></span>
               <label className={`cursor-pointer flex items-center gap-2 w-full border-2 border-dashed rounded-lg px-3 py-2 text-[13px] transition-colors ${form.photoId ? "border-steel-400 text-steel-400 bg-steel-400/5" : "border-border-subtle text-alloy-400 bg-panel-800"} hover:border-steel-400 hover:text-alloy-100`}>
                 <span className="text-base leading-none">{form.photoId ? "✓" : "📎"}</span>
                 <span>{form.photoId ? "Document uploaded" : "Upload ID document"}</span>
@@ -83,6 +84,9 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
               </select>
               <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-alloy-300 pointer-events-none text-xs">▾</span>
             </div>
+          </Field>
+          <Field label="WhatsApp number" required>
+            <input className={inp} type="tel" placeholder="E.g. 919876543210" value={form.waNumber} onChange={(e) => set("waNumber", e.target.value)} />
           </Field>
           <div className="flex gap-3">
             <Field label="Plant / office">
@@ -140,8 +144,13 @@ export function NewPassDrawer({ onClose, onCreated }: { onClose(): void; onCreat
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return <label className="flex flex-col gap-1.5 flex-1"><span className="text-xs text-alloy-300">{label}</span>{children}</label>;
+function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+  return (
+    <label className="flex flex-col gap-1.5 flex-1">
+      <span className="text-xs text-alloy-300">{label}{required && <span className="text-ember-500 ml-0.5">*</span>}</span>
+      {children}
+    </label>
+  );
 }
 
 async function compressImage(file: File, maxBytes = 200 * 1024): Promise<string> {
