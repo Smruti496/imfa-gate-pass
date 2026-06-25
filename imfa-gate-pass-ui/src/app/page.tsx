@@ -61,11 +61,35 @@ export default function DashboardPage() {
 
   const refresh = useCallback(() => { mutateList(); mutateStats?.(); }, [mutateList, mutateStats]);
 
+  const KPI_FILTERS = {
+    totalToday: { status: "all",     showAllDates: false },
+    onsite:     { status: "onsite",  showAllDates: false },
+    pending:    { status: "pending", showAllDates: true  },
+    cleared:    { status: "cleared", showAllDates: false },
+  } as const;
+
+  const handleKpiClick = useCallback((key: keyof typeof KPI_FILTERS) => {
+    const f = KPI_FILTERS[key];
+    setStatus(f.status);
+    setShowAll(f.showAllDates);
+    setQuery("");
+    setLocation("all");
+    setActiveTab("list");
+  }, []);
+
+  const handleSiteClick = useCallback((locationId: string) => {
+    setLocation(locationId);
+    setStatus("all");
+    setShowAll(false);
+    setQuery("");
+    setActiveTab("list");
+  }, []);
+
   return (
     <>
       <GlowBar />
       <Header onNewPass={() => setShowNewPass(true)} theme={theme} onToggleTheme={toggleTheme} />
-      <StatsGrid />
+      <StatsGrid onCardClick={handleKpiClick} />
       <div className="w-full px-8 pt-4">
         <div className="flex gap-2 mb-6">
           {([
@@ -88,7 +112,7 @@ export default function DashboardPage() {
       </div>
       {activeTab === "analytics" && (
         <>
-          <SiteChart />
+          <SiteChart onBarClick={handleSiteClick} />
           <AnalyticsSection
             analytics={analytics}
             isLoading={analyticsLoading}

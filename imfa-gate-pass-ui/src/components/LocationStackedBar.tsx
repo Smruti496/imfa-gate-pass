@@ -11,7 +11,7 @@ interface Props { data: LocationStatus[] | undefined; isLoading: boolean }
 export function LocationStackedBar({ data, isLoading }: Props) {
   const chartData = (data ?? []).map((d) => ({
     name: abbrev(d.locationName),
-    Pending: d.pending,
+    Awaiting: d.pending,
     "On-Site": d.onsite,
     Cleared: d.cleared,
   }));
@@ -33,7 +33,7 @@ export function LocationStackedBar({ data, isLoading }: Props) {
               cursor={{ fill: "var(--color-panel-700)" }}
             />
             <Legend formatter={(value) => <span style={{ fontSize: 12, color: "var(--color-alloy-300)" }}>{value}</span>} />
-            <Bar dataKey="Pending"  stackId="loc" fill="#F59E0B" radius={[0, 0, 0, 0]} />
+            <Bar dataKey="Awaiting" stackId="loc" fill="#F59E0B" radius={[0, 0, 0, 0]} />
             <Bar dataKey="On-Site"  stackId="loc" fill="#E8552E" radius={[0, 0, 0, 0]} />
             <Bar dataKey="Cleared"  stackId="loc" fill="#22C55E" radius={[4, 4, 0, 0]} />
           </BarChart>

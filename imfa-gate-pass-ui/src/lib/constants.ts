@@ -15,7 +15,7 @@ export const PURPOSES = [
 
 export const STATUS_META = {
   pending: {
-    label: "Pending",
+    label: "Awaiting",
     stamp: "AWAITING",
     stampClass: "text-steel-400 border-steel-400 bg-steel-dim",
   },

@@ -35,7 +35,7 @@ export function FilterControls({ query, location, status, showAllDates, onQuery,
       <div className="relative w-[150px]">
         <select value={status} onChange={(e) => onStatus(e.target.value)} className={sel}>
           <option value="all">All statuses</option>
-          <option value="pending">Pending</option>
+          <option value="pending">Awaiting</option>
           <option value="onsite">On-Site</option>
           <option value="cleared">Cleared</option>
         </select>

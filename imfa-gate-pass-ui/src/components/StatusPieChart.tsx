@@ -8,7 +8,7 @@ const STATUS_COLORS: Record<string, string> = {
   cleared: "#22C55E",
 };
 const STATUS_LABELS: Record<string, string> = {
-  pending: "Pending",
+  pending: "Awaiting",
   onsite:  "On-Site",
   cleared: "Cleared",
 };
