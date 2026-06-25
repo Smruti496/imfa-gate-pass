@@ -22,3 +22,6 @@ ALTER TABLE public.gate_pass ADD COLUMN IF NOT EXISTS gender text;
 
 -- Checkin webhook: visitor WhatsApp number
 ALTER TABLE public.gate_pass ADD COLUMN IF NOT EXISTS wa_number text;
+
+-- Location split: kalinganagar → kalinganagar-1 (Kalinga Nagar Plant 1) + kalinganagar-2 (Kalinga Nagar Plant 2)
+UPDATE public.gate_pass SET location = 'kalinganagar-1' WHERE LOWER(location) = 'kalinganagar';

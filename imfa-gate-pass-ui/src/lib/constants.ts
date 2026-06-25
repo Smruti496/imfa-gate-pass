@@ -1,8 +1,10 @@
 export const LOCATIONS = [
   { id: "therubali",    name: "Therubali Plant",             sub: "Rayagada Dist., Odisha", gates: ["Main Gate", "Gate 2 – Loading Bay", "Township Gate"] },
   { id: "choudwar",     name: "Choudwar Plant",              sub: "Cuttack Dist., Odisha",  gates: ["Main Gate", "Raw Material Gate", "Admin Gate"] },
-  { id: "kalinganagar", name: "Kalinganagar Plant",          sub: "Jajpur Dist., Odisha",   gates: ["Main Security Gate", "Gate 2"] },
-  { id: "bhubaneswar",  name: "Bhubaneswar Corporate Office",sub: "Registered Office",      gates: ["Reception", "Basement Entry"] },
+  { id: "kalinganagar-1", name: "Kalinga Nagar Plant 1",        sub: "Jajpur Dist., Odisha",   gates: ["Main Security Gate", "Gate 2"] },
+  { id: "kalinganagar-2", name: "Kalinga Nagar Plant 2",        sub: "Jajpur Dist., Odisha",   gates: ["Main Security Gate", "Gate 2"] },
+  { id: "sukinda",        name: "Sukinda Mines",                sub: "Jajpur Dist., Odisha",   gates: ["Main Gate", "Gate 2"] },
+  { id: "bhubaneswar",    name: "Bhubaneswar Corporate Office", sub: "Registered Office",      gates: ["Reception", "Basement Entry"] },
 ] as const;
 
 export const PURPOSES = [
@@ -34,4 +36,5 @@ export const ID_TYPES = ["Aadhaar", "PAN", "Voter ID", "Passport", "Driving Lice
 export const GENDERS = ["Male", "Female", "Other"] as const;
 
 export const locById = (id: string | null | undefined) =>
-  LOCATIONS.find((l) => l.id === id || id?.toLowerCase().startsWith(l.id));
+  LOCATIONS.find((l) => l.id === id || id?.toLowerCase().startsWith(l.id))
+  ?? (id?.toLowerCase() === 'kalinganagar' ? LOCATIONS.find(l => l.id === 'kalinganagar-1') : undefined);

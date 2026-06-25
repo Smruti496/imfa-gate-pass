@@ -9,7 +9,7 @@ export function SiteChart() {
     <section className="w-full px-8 pb-4">
       <div className="bg-panel-800 border border-border-subtle rounded-[10px] p-4 shadow-card">
         <div className="font-display text-xs text-alloy-300 mb-2.5 uppercase tracking-[0.04em]">Entries by site — today</div>
-        <div className="flex items-end gap-3.5 h-[100px]">
+        <div className="flex items-end gap-1 h-[100px]">
           {data.map((d: any, i: number) => {
             const h = d.count === 0 ? 4 : Math.max(8, Math.round((d.count / max) * 84));
             return (
