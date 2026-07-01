@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import type { LocationStatus } from "@/lib/types";
 
 function abbrev(name: string) {
-  return name.replace(" Plant", "").replace(" Corporate Office", " HO");
+  return name.replace("JSW Ispat Special Products", "JSW Ispat");
 }
 
 interface Props { data: LocationStatus[] | undefined; isLoading: boolean }
@@ -25,7 +25,7 @@ export function LocationStackedBar({ data, isLoading }: Props) {
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={chartData} margin={{ top: 4, right: 8, left: -16, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-subtle)" vertical={false} />
-            <XAxis dataKey="name" tick={{ fontSize: 11, fill: "var(--color-alloy-300)" }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="name" interval={0} tick={{ fontSize: 10, fill: "var(--color-alloy-300)" }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fontSize: 11, fill: "var(--color-alloy-300)" }} axisLine={false} tickLine={false} allowDecimals={false} />
             <Tooltip
               contentStyle={{ background: "var(--color-panel-800)", border: "1px solid var(--color-border-subtle)", borderRadius: 8, fontSize: 12 }}
