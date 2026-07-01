@@ -1,10 +1,12 @@
 export const LOCATIONS = [
-  { id: "therubali",    name: "Therubali Plant",             sub: "Rayagada Dist., Odisha", gates: ["Main Gate", "Gate 2 – Loading Bay", "Township Gate"] },
-  { id: "choudwar",     name: "Choudwar Plant",              sub: "Cuttack Dist., Odisha",  gates: ["Main Gate", "Raw Material Gate", "Admin Gate"] },
-  { id: "kalinganagar-1", name: "Kalinga Nagar Plant 1",        sub: "Jajpur Dist., Odisha",   gates: ["Main Security Gate", "Gate 2"] },
-  { id: "kalinganagar-2", name: "Kalinga Nagar Plant 2",        sub: "Jajpur Dist., Odisha",   gates: ["Main Security Gate", "Gate 2"] },
-  { id: "sukinda",        name: "Sukinda Mines",                sub: "Jajpur Dist., Odisha",   gates: ["Main Gate", "Gate 2"] },
-  { id: "bhubaneswar",    name: "Bhubaneswar Corporate Office", sub: "Registered Office",      gates: ["Reception", "Basement Entry"] },
+  { id: "vijayanagar",         name: "Vijayanagar Works",          sub: "Bellary Dist., Karnataka",         gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "salem",               name: "Salem Works",                sub: "Salem Dist., Tamil Nadu",          gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "tarapur",             name: "Tarapur Works",              sub: "Palghar Dist., Maharashtra",       gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "kalmeshwar",          name: "Kalmeshwar Works",           sub: "Nagpur Dist., Maharashtra",        gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "vasind",              name: "Vasind Works",               sub: "Thane Dist., Maharashtra",         gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "jsw-ispat",           name: "JSW Ispat Special Products", sub: "Dolvi, Raigad Dist., Maharashtra", gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "bhushan-power-steel", name: "Bhushan Power & Steel",      sub: "Jharsuguda Dist., Odisha",         gates: ["Main Gate", "Gate 2", "Gate 3"] },
+  { id: "dolvi",               name: "Dolvi Works",                sub: "Raigad Dist., Maharashtra",        gates: ["Main Gate", "Gate 2", "Gate 3"] },
 ] as const;
 
 export const PURPOSES = [
@@ -36,5 +38,4 @@ export const ID_TYPES = ["Aadhaar", "PAN", "Voter ID", "Passport", "Driving Lice
 export const GENDERS = ["Male", "Female", "Other"] as const;
 
 export const locById = (id: string | null | undefined) =>
-  LOCATIONS.find((l) => l.id === id || id?.toLowerCase().startsWith(l.id))
-  ?? (id?.toLowerCase() === 'kalinganagar' ? LOCATIONS.find(l => l.id === 'kalinganagar-1') : undefined);
+  LOCATIONS.find((l) => l.id === id || id?.toLowerCase().startsWith(l.id));

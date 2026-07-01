@@ -44,7 +44,7 @@ public class CheckinEmailService {
                     MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
                     helper.setFrom(fromAddress);
                     helper.setTo(toEmail);
-                    helper.setSubject("IMFA Gate Pass — Check-In Confirmation | " + passNo);
+                    helper.setSubject("JSW Gate Pass — Check-In Confirmation | " + passNo);
                     helper.setText(html, true);
                     helper.addAttachment(passNo + ".pdf", new ByteArrayResource(pdfBytes), "application/pdf");
                     mailSender.send(msg);
@@ -79,9 +79,9 @@ public class CheckinEmailService {
                     <tr>
                       <td style="background:#0f172a;padding:24px 32px;">
                         <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:.5px;">
-                          IMFA <span style="font-weight:300;color:#94a3b8;">GATE PASS</span>
+                          JSW <span style="font-weight:300;color:#94a3b8;">GATE PASS</span>
                         </p>
-                        <p style="margin:4px 0 0;color:#93c5fd;font-size:11px;">Indian Metals &amp; Ferro Alloys Ltd.</p>
+                        <p style="margin:4px 0 0;color:#93c5fd;font-size:11px;">JSW Ltd.</p>
                       </td>
                     </tr>
 

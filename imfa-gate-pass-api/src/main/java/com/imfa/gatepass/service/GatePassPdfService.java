@@ -83,12 +83,12 @@ public class GatePassPdfService {
             brandCell.setPaddingTop(18);  brandCell.setPaddingBottom(14);
 
             Paragraph brandLine = new Paragraph();
-            brandLine.add(new Chunk("IMFA  ", fBrand));
+            brandLine.add(new Chunk("JSW  ", fBrand));
             brandLine.add(new Chunk("GATE PASS",
                 FontFactory.getFont(FontFactory.HELVETICA, 22, new Color(148, 163, 184))));
             brandCell.addElement(brandLine);
 
-            Paragraph subLine = new Paragraph("Indian Metals & Ferro Alloys Ltd.", fBrandSub);
+            Paragraph subLine = new Paragraph("JSW Ltd.", fBrandSub);
             subLine.setSpacingBefore(2);
             brandCell.addElement(subLine);
 
@@ -226,7 +226,7 @@ public class GatePassPdfService {
             sealTitle.setSpacingAfter(8);
             sealCell.addElement(sealTitle);
 
-            sealCell.addElement(sealLine("Issued by",    "Security Department, IMFA Ltd.", fSealBody));
+            sealCell.addElement(sealLine("Issued by",    "Security Department, JSW Ltd.", fSealBody));
             sealCell.addElement(sealLine("Date & Time",  issuedAt,                         fSealBody));
             sealCell.addElement(sealLine("Document",     pass.getPassNo() != null ? pass.getPassNo() : "—", fSealBody));
 
@@ -248,7 +248,7 @@ public class GatePassPdfService {
             canvas.setColorFill(NAVY);
             canvas.beginText();
             canvas.setFontAndSize(bf, 80);
-            canvas.showTextAligned(Element.ALIGN_CENTER, "IMFA",
+            canvas.showTextAligned(Element.ALIGN_CENTER, "JSW",
                 PageSize.A4.getWidth() / 2, PageSize.A4.getHeight() / 2, 35);
             canvas.endText();
             canvas.restoreState();

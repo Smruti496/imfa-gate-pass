@@ -11,9 +11,9 @@ export function Header({ onNewPass, theme, onToggleTheme }: HeaderProps) {
     <header className="w-full px-8 py-5 pb-3 flex items-start justify-between gap-4 flex-wrap">
       <div className="flex items-center gap-3">
         <div className="bg-white rounded-lg px-2 py-1 flex-shrink-0">
-          <img src="/imfa-logo.png" alt="IMFA" className="h-9 w-auto" />
+          <img src="/jsw-logo.png" alt="JSW" className="h-9 w-auto" />
         </div>
-        <div className="text-[11.5px] text-alloy-300 tracking-[0.06em]">Indian Metals &amp; Ferro Alloys · Gate Pass Control</div>
+        <div className="text-[11.5px] text-alloy-300 tracking-[0.06em]">JSW · Gate Pass Control</div>
       </div>
       <div className="flex items-center gap-2">
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />

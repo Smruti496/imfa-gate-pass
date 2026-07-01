@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "IMFA · Gate Pass Control",
-  description: "Indian Metals & Ferro Alloys — Gate Pass Management System",
+  title: "JSW · Gate Pass Control",
+  description: "JSW — Gate Pass Management System",
 };
 
 const themeScript = `

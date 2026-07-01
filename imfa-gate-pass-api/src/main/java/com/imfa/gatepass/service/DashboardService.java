@@ -18,15 +18,17 @@ public class DashboardService {
     private static final ZoneId IST = ZoneId.of("Asia/Kolkata");
 
     private static final Map<String, String> LOCATION_NAMES = Map.of(
-        "therubali",      "Therubali Plant",
-        "choudwar",       "Choudwar Plant",
-        "kalinganagar-1", "Kalinga Nagar Plant 1",
-        "kalinganagar-2", "Kalinga Nagar Plant 2",
-        "sukinda",        "Sukinda Mines",
-        "bhubaneswar",    "Bhubaneswar HO"
+        "vijayanagar",         "Vijayanagar Works",
+        "salem",               "Salem Works",
+        "tarapur",             "Tarapur Works",
+        "kalmeshwar",          "Kalmeshwar Works",
+        "vasind",              "Vasind Works",
+        "jsw-ispat",           "JSW Ispat Special Products",
+        "bhushan-power-steel", "Bhushan Power & Steel",
+        "dolvi",               "Dolvi Works"
     );
     private static final List<String> LOCATION_ORDER =
-        List.of("therubali", "choudwar", "kalinganagar-1", "kalinganagar-2", "sukinda", "bhubaneswar");
+        List.of("vijayanagar", "salem", "tarapur", "kalmeshwar", "vasind", "jsw-ispat", "bhushan-power-steel", "dolvi");
 
     @Transactional(readOnly = true)
     public DashboardStatsDto getStats() {
